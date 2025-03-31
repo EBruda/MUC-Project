@@ -31,21 +31,23 @@ def running_speed():
     try:
         f = request.files["file"]
     except Exception as e:
-        raise e
+        result_map = {}
+        result_map["prediction_result"] = str(e)
+        json_obj = json.dumps(result_map)
+        return json_obj
     try:
        
         speed_x, speed_y = airpod_running.predict(f)
         print("RESULT", speed_x)
         prediction_result = speed_x
         result_map = {}
-        result_map["prediction_result"] = prediction_result
+        result_map["prediction_result"] = str(prediction_result)
         json_obj = json.dumps(result_map)
         return json_obj
 
     except Exception as e:
-        prediction_result = e
         result_map = {}
-        result_map["prediction_result"] = e
+        result_map["prediction_result"] = str(e)
         json_obj = json.dumps(result_map)
         return json_obj
 
