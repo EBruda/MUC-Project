@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MUC Project</title>
+    <!-- Include your custom CSS file -->
+    <link rel="stylesheet" href="styles.css">
+    <!-- Link to Bootstrap CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='images/btaplogo.png') }}">
+    <!-- Include Google Fonts for different fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <style>
+      h1 {
+          text-align: center; /* Center align the text */
+          margin-top: 50px; /* Add margin space on top for better spacing */
+      }
+      body {
+            background-color: #a1bbe6; /* Set the background color */
+            /* You can replace #f0f0f0 with any color value you prefer */
+            /* For example: background-color: white; */
+        }
+        .container {
+            max-width: 800px; /* Set maximum width of the container */
+            margin: 50px auto; /* Center the container horizontally */
+            padding: 20px; /* Add padding */
+        }
+        .welcome-box {
+            background-color: #Fbc4ab; /* Background color of the box */
+            border-radius: 10px; /* Rounded corners */
+            border-style: outset;
+            border-color:black;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); /* Add shadow for depth */
+            max-width: 600px; /* Set maximum width of the box */
+            margin: 50px auto; /* Center the box horizontally */
+            z-index: 2;
+        }
+        .form-column {
+            margin-bottom: 20px; /* Add margin bottom for spacing */
+        }
+        .form-column label {
+            font-weight: bold; /* Make labels bold */
+            margin-bottom: 10px; /* Add margin bottom for spacing */
+        }
+        .form-column input[type="submit"] {
+            width: 100%; /* Set submit button width to 100% */
+            margin-top: 10px; /* Add margin top for spacing */
+        }
+        .form-wrapper {
+            display: flex;
+            justify-content: center; /* Center horizontally */
+            margin-bottom: 20px; /* Add some margin at the bottom */
+        }
+  </style>
+</head>
+<body>
+    <main>
+        <div class="container text-center">
+            <div class="welcome-box">
+                <h1 class="display-4 fw-bold text-primary my-5">Welcome to our MUC app!</h1>
+            </div>
+            <p class="intro-sentence">To upload a file, please choose an option below!</p>
+            <div class = "form-wrapper">
+
+            <form id="upload-form" method="post" enctype="multipart/form-data" action="{{url_for('recording_upload_web')}}">
+                <div class="new-upload">
+                    <label for="file">Upload a CSV file to the server:</label>
+                    <input type="file" name="file" id="file" class="form-control-file">
+                    <input type="submit" value="Upload" class="btn btn-primary" id="upload-btn">
+                </div>
+            </form>
+
+            <form method="post" action="{{url_for('get_prediction_web')}}">
+                <div class="previous-upload">
+                    <label for="pfile">Enter a previously uploaded filename for a running speed prediction:</label>
+                    <input type="text" name="pfile" id="pfile" placeholder="Filename" class="form-control">
+                    <!-- <label for="data_type">Data Type:</label>
+                    <select name="data_type" id="select" class="form-control">
+                        <option value="PPG">PPG</option>
+                        <option value="EEG">EEG</option>
+                    </select> -->
+                    <!-- <br> -->
+                    <!-- <div id="srdiv">
+                        <input placeholder="Sampling Rate" type="text" class="form-control" id="samplingrate" name="samplingrate" style="max-width: 256px;">
+                    </div> -->
+                    <!-- <br> -->
+                    </div>
+                    <input type="submit" value="Get Prediction" class="btn btn-primary" id="predict-btn">
+                </form>
+            </div>
+
+    </main>
+    <script>
+        window.addEventListener("DOMContentLoaded", (event) => {
+          const select = document.getElementById('select');
+          const samplingratediv = document.getElementById('srdiv')
+          select.addEventListener('change', function () {
+              const value = select.value;
+              if (value == "PPG") {
+                samplingratediv.style.visibility = 'visible';
+              }
+              else {
+                samplingratediv.style.visibility = 'hidden';
+              }
+          });
+        });
+    </script>
+</body>
+</html>

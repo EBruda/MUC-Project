@@ -1,0 +1,120 @@
+body {
+    font-family: 'Inter', sans-serif;
+
+    background-color: #a1bbe6; /* Light grey background */
+    color: #343a40; /* Dark grey text color */
+}
+
+.banner {
+    width: 100%; /* Make the image span the entire width of the page */
+    height: auto; /* Maintain aspect ratio */
+    display: block; /* Ensure it's displayed as a block element */
+}
+
+.intro-sentence {
+    text-align: center;
+    font-weight: bold;
+}
+
+.container {
+    margin-top: 50px;
+}
+
+.welcome-box {
+    background-color: #76b5c5;
+}
+
+.btn-primary {
+    background-color: #a1bbe6; /* Blue button */
+    border-color: black;
+}
+
+.btn-primary:hover {
+    background-color: white; /* Darker blue on hover */
+    border-color: black;
+    cursor: pointer;
+}
+
+.upload-container{
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.uploads-wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.new-upload{
+    flex:1;
+    width: 500px;
+    height:200px;
+    background-color: #Fbc4ab;
+    border-radius: 10px; /* Rounded corners */
+    border-style: outset;
+    border-color:black;
+    font-size: 22px;
+    margin-right: 20px;
+
+
+}
+
+.previous-upload{
+    flex:1;
+    width: 500px;
+    height:200px;
+    background-color: #Fbc4ab;
+    border-radius: 10px; /* Rounded corners */
+    border-style: outset;
+    border-color:black;
+    font-size: 22px;
+
+}
+
+#upload-btn{
+    width:50%;
+    border-radius: 10px;
+}
+
+@media(max-width: 400px) {
+    .container{
+        flex-direction: column;
+    }
+}
+
+
+.form-control,
+.form-select {
+    border: 1px solid #ced4da; /* Grey border for input fields and select */
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: #80bdff; /* Blue border on focus */
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); /* Blue shadow on focus */
+}
+
+.text-primary {
+    color: black; /* Blue text color */
+}
+
+.display-4.fw-bold.text-primary.my-5 {
+    text-align: center;
+}
+
+.prediction-button {
+    margin-top: 20px; /* Add margin top for spacing */
+    text-align: center; /* Center the button horizontally */
+}
+
+#predict-btn {
+    width: 20%;
+    font-size: 18px;
+    margin-left: auto; /* Set left margin to auto */
+    margin-right: auto; /* Set right margin to auto */
+}
+
+
+
