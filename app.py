@@ -45,7 +45,7 @@ def running_speed():
     except Exception as e:
         prediction_result = e
         result_map = {}
-        result_map["prediction_result"] = "ERROR"
+        result_map["prediction_result"] = e
         json_obj = json.dumps(result_map)
         return json_obj
 
