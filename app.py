@@ -98,12 +98,7 @@ def recording_upload_web():
 def get_prediction_mobile():
     try:
         f = request.args.get("file")
-        dt = request.args.get("datatype")
-        if (dt  == "PPG"):
-            sampling_rate_value = float(request.args.get("samplingrate"))
-        else:
-            sampling_rate_value = None
-        prediction_result = model_prediction(f, dt, sampling_rate_value)
+        prediction_result = model_prediction(f)
         result_map = {}
         result_map["prediction_result"] = prediction_result
         json_obj = json.dumps(result_map)
