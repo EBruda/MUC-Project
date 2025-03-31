@@ -44,14 +44,14 @@ def get_sampling_rate(df):
     return time_diffs, sampling_rate
 
 
-def get_data(args):
-    loc = args["data_loc"]
+def get_data(file):
+    # loc = args["data_loc"]
 
     try:
-        data = pd.read_excel(loc)
+        data = pd.read_excel(file)
     except:
         try:
-            data = pd.read_csv(loc)
+            data = pd.read_csv(file)
         except Exception as e:
             raise e
     data.columns = [
@@ -143,11 +143,11 @@ def process_windows(accel_data, indices):
     return speed_in_x_direction, speed_in_y_direction
 
 
-def predict(filename):
-    args = {
-        "data_loc": filename
-        # "data_loc": "data/general_phone.csv"
-    }
-    accel_data, indices = get_data(args)
+def predict(file):
+    # args = {
+    #     "data_loc": filename
+    #     # "data_loc": "data/general_phone.csv"
+    # }
+    accel_data, indices = get_data(file)
     spx, spy = process_windows(accel_data, indices)
     return spx, spy
