@@ -52,8 +52,8 @@ def get_data(args):
     except:
         try:
             data = pd.read_csv(loc)
-        except:
-            raise ValueError("Error")
+        except Exception as e:
+            raise e
     data.columns = [
         "Timestamp",
         "QuaternionX",
