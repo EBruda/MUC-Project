@@ -85,10 +85,10 @@ def get_data(file):
     # accel_data = filtered_data
     accel_magnitude = np.linalg.norm(accel_data, axis=1)
     max = np.max(accel_magnitude)
-    print(max)
-    # threshold = max / 2.5
-    threshold = 0.01
-    print(threshold)
+    print("max", max)
+    threshold = max / 2.5
+    # threshold = 0.01
+    # print(threshold)
     print(np.max(accel_magnitude))
     indices = np.array(np.where(accel_magnitude > threshold))
     print("indices", indices.shape)
@@ -123,24 +123,24 @@ def process_windows(accel_data, indices):
         ]
         v_x.append(abs(integral_linear_accel_x))
         v_y.append(abs(integral_linear_accel_y))
-    print(v_x)
-    print(v_y)
-    if (len(v_x) == 0):
+    # print(v_x)
+    # print(v_y)
+    if len(v_x) == 0:
         speed_in_x_direction = 0
         speed_in_y_direction = 0
     else:
         speed_in_x_direction = np.average(v_x)
         speed_in_y_direction = np.average(v_y)
-        if speed_in_x_direction <= 0.16536719117642723:
-            speed_in_x_direction = 0
-        if speed_in_y_direction <= 0.11953063780577095:
-            speed_in_y_direction = 0
+        # if speed_in_x_direction <= 0.16536719117642723:
+        speed_in_x_direction += 0.16536719117642723
+        speed_in_y_direction += 0.11953063780577095
+        # speed_in_y_direction = 0
         speed_in_x_direction = speed_in_x_direction * 2
         speed_in_y_direction = speed_in_y_direction * 2
     print(speed_in_x_direction, "m/s")
     print(speed_in_y_direction, "m/s")
 
-    return speed_in_x_direction, speed_in_y_direction
+    return round(speed_in_x_direction, 2), round(speed_in_y_direction,2)
 
 
 def predict(file):
