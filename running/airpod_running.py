@@ -2,7 +2,7 @@ import os
 import pandas as pd
 import numpy as np
 from scipy.integrate import cumulative_trapezoid, trapz
-from scipy.signal import medfilt
+# from scipy.signal import medfilt
 from scipy.signal import butter, lfilter, filtfilt
 
 
