@@ -37,7 +37,7 @@ def running_speed():
         return json_obj
     try:
        
-        speed_x, speed_y = airpod_running.predict(f)
+        speed_x = airpod_running.predict(f)
         print("RESULT", speed_x)
         prediction_result = speed_x
         result_map = {}
@@ -70,7 +70,7 @@ def model_prediction(f):
         download_stream = client.download_blob()
         sample_blob.write(download_stream.readall())
 
-    speed_x, speed_y = airpod_running.predict("temp.csv")
+    speed_x = airpod_running.predict("temp.csv")
     print("RESULT", speed_x)
     return str(speed_x)
 
