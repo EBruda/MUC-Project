@@ -35,6 +35,53 @@ def butter_highpass_filter(data, cutoff, fs, order=4):
 
     return filtered_data
 
+def estimate_speed_from_stride(accel_data, stride_length=2):
+    """
+    Estimates running speed using stride length and step detection.
+    
+    Parameters:
+    - accel_data: np.ndarray of shape (n_samples, 3)
+    - stride_length: length of a stride in meters (default = 1.5m)
+
+    Returns:
+    - Estimated speed in m/s
+    """
+    accel_data = np.array(accel_data)
+    accel_data = butter_lowpass_filter(accel_data, 5, 25, 5)
+    sr = 25  # Sampling rate in Hz
+    total_time = len(accel_data) / sr  # in seconds
+
+    # Compute magnitude of acceleration
+    magnitude = np.linalg.norm(accel_data, axis=1)
+
+    # Smooth with moving average
+    window_size = int(0.1 * sr)
+    smooth_magnitude = np.convolve(magnitude, np.ones(window_size)/window_size, mode="same")
+
+    # Detect steps via peaks
+    peaks, _ = find_peaks(smooth_magnitude, distance=sr*0.5, height=1.6*np.mean(smooth_magnitude))
+    step_count = len(peaks)
+    mean = np.mean(smooth_magnitude)
+    print("step count", step_count)
+    print("mean", mean) 
+    if (mean <=0.01):
+        step_count = 0
+    elif (mean <= 0.03):
+        step_count = int(step_count / 2)
+
+    # 0.0014185202482335244 - still
+    # 0.02880985786964116 - walking
+    # 0.055291447132088764 - running
+    # Convert steps to strides
+    stride_count = step_count // 2  # 2 steps = 1 stride
+
+    # Estimate speed
+    if total_time == 0 or stride_count == 0:
+        return 0.0
+
+    estimated_speed = (stride_count * stride_length) / total_time  # m/s
+    return round(estimated_speed, 5) 
+
 
 def get_sampling_rate(df):
     df = pd.DataFrame(df)
@@ -119,13 +166,13 @@ def process_windows(accel_data):
     magnitude = np.linalg.norm(accel_data, axis=1)
 
     # 2. Optional: smooth the signal (moving average filter)
-    window_size = int(0.1 * sr)  # 200 ms window
+    window_size = int(0.05 * sr)  # 200 ms window
     smooth_magnitude = np.convolve(
         magnitude, np.ones(window_size) / window_size, mode="same"
     )
 
     # 3. Find peaks (each peak = 1 step)
-    peaks, _ = find_peaks(smooth_magnitude, distance=sr*0.25, height=1.65*np.mean(smooth_magnitude))
+    peaks, _ = find_peaks(smooth_magnitude, distance=sr*3, height=1.65*np.mean(smooth_magnitude))
     # indices = np.arange(0, accel_data.shape[0], 1)
     indices = peaks
     # indices.insert(0, 0)
@@ -140,7 +187,7 @@ def process_windows(accel_data):
         # print(end_idx)
         # print(start_idx)
         # dt = (end_idx - start_idx) / 25
-        dt = (end_idx - start_idx) /25
+        dt = (1) /25
         # Calculate the speed (magnitude of velocity)
         speed_x = cumtrapz(accel_win[:, 0], dx=dt, initial=0)[-1]
         speed_y = cumtrapz(accel_win[:, 1], dx=dt, initial=0)[-1]
@@ -150,7 +197,7 @@ def process_windows(accel_data):
         # speed_z = np.abs(speed_z)
 
         # Combine the velocity components to get the speed at each point
-        speed_magnitude = np.sqrt(speed_x**2 + speed_y**2 + speed_z**2)
+        speed_magnitude = np.sqrt(speed_x**2 + speed_y**2 + speed_z**2) * 5
         # print("speed magnitude", speed_magnitude)
         # The cumulative speed (total distance traveled) would be the final value of the magnitude
         
@@ -171,7 +218,7 @@ def process_windows(accel_data):
         # print(v_x)
         speed = np.average(v)
 
-    return round(speed, 5)
+    return round(speed, 5) 
 
 
 def predict(file):
@@ -180,7 +227,7 @@ def predict(file):
     #     # "data_loc": "data/general_phone.csv"
     # }
     accel_data = get_data(file)
-    speed = process_windows(accel_data)
+    speed = estimate_speed_from_stride(accel_data) 
     return speed
 
 
@@ -194,8 +241,9 @@ if __name__ == "__main__":
     """
 
     # input_csv_file = sys.argv[1]
-    for file in os.listdir("../split_csv_files_still"):
+    dir = "../hannah_running/"
+    for file in os.listdir(dir):
         print(file)
-        spx = predict("../split_csv_files_still/" + file)
+        spx = predict(dir + file)
         print("min per mile", to_pace_time(spx))
         print(" -- - -- - -- - ")

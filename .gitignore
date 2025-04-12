@@ -135,3 +135,8 @@ temp.csv
 eegmodel/temp_files/*
 tanvi_04_07_19_45_47.csv
 tanvi_still.csv
+/hannah_running
+/tanvi_running
+/tanvi_still
+/tanvi_walking
+*.csv

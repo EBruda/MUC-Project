@@ -32,7 +32,7 @@ def split_csv_into_windows(input_file, lines_per_window=6000):
 
     # Create output directory (optional, you can remove this if you just want them
     # in the same directory as input)
-    output_dir = os.path.join(os.path.dirname(input_file), "split_csv_files_still")
+    output_dir = os.path.join(os.path.dirname(input_file), "split_csv_files")
     os.makedirs(output_dir, exist_ok=True)
 
     # Calculate how many split files we need
